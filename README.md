@@ -20,6 +20,19 @@ npm run preview  # abre o dist/ gerado
 | Privacidade | `/privacidade/` | O que o app guarda, o que não faz e este site    |
 | Instalar    | `/instalar/`    | Download do APK e passo a passo                  |
 | Sobre       | `/sobre/`       | O projeto de extensão e a origem dos dados       |
+| Acompanhar  | `/acompanhar/`  | Página privada de localização ao vivo (fora do menu) |
+
+### Acompanhamento ao vivo (`/acompanhar/`)
+
+Acessada apenas pelo link enviado pela usuária no app (`/acompanhar/#t=<viewer_token>`). O token fica depois do `#`, fora dos logs do servidor. Para testar a interface localmente sem criar sessão no banco, abra `http://localhost:3000/acompanhar/#demo`.
+
+No `vercel.json`, a rota `/acompanhar(.*)` possui uma regra própria de CSP e COEP (`unsafe-none`) para permitir apenas o carregamento de tiles do OpenStreetMap (`tile.openstreetmap.org`), geocoding reverso (`nominatim.openstreetmap.org`) e a RPC pública `location_share_view` no Supabase — mantendo a política estrita (`'self'`) nas demais páginas do site.
+
+Para ativar o recurso no app Android, gere o build informando o endereço publicado:
+
+```bash
+flutter build apk --release --dart-define=TRACKING_PAGE_URL=https://SEU-DOMINIO/acompanhar/
+```
 
 Cada página é um HTML de verdade (`index.html` e `<pasta>/index.html`), então recarregar e abrir por link direto funcionam em qualquer hospedagem, sem configurar o servidor.
 

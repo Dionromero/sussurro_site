@@ -18,7 +18,7 @@ const passos = [
   ],
   [
     "Instale",
-    "Volte e toque em “Instalar”. Em alguns segundos o Sussurro aparece na lista de apps. Se o Play Protect quiser verificar o app antes, pode deixar.",
+    "Volte e toque em “Instalar”. Em alguns segundos o Sussurro aparece na lista de apps. Se o Google Play Protect exibir um alerta, toque em “Mais detalhes” e depois em “Instalar assim mesmo”.",
   ],
 ];
 
@@ -112,6 +112,17 @@ export function PaginaInstalar() {
                 </li>
               ))}
             </ol>
+            <div className="aviso" data-revelar>
+              <ShieldAlert size={22} aria-hidden="true" />
+              <p>
+                <strong>O Google Play Protect bloqueou a instalação?</strong> Como o Sussurro ainda é instalado fora da
+                Play Store, o Play Protect pode impedir a instalação. Se acontecer, abra a <strong>Play Store</strong>,
+                toque na sua foto de perfil (canto superior direito) → <strong>Play Protect</strong> → ícone de
+                engrenagem (Configurações) e desative temporariamente{" "}
+                <strong>“Verificar apps com o Play Protect”</strong>. Assim que terminar de instalar o Sussurro,{" "}
+                <strong>ative o Play Protect novamente</strong> para manter seu celular protegido.
+              </p>
+            </div>
             <div className="aviso" data-revelar>
               <ShieldAlert size={22} aria-hidden="true" />
               <p>

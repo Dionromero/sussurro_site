@@ -10,21 +10,54 @@ const RAIZ = fileURLToPath(new URL(".", import.meta.url));
 const PASTA_DOWNLOADS = join(RAIZ, "public/downloads");
 const MODULO = "virtual:apk";
 
-type Vercel = { headers: { source: string; headers: { key: string; value: string }[] }[] };
+type RegraVercel = { source: string; headers: { key: string; value: string }[] };
+type Vercel = { headers: RegraVercel[] };
 const vercel: Vercel = JSON.parse(readFileSync(join(RAIZ, "vercel.json"), "utf8"));
-const SEGURANCA: Record<string, string> = Object.fromEntries(
-  (vercel.headers.find((regra) => regra.source === "/(.*)")?.headers ?? []).map((h) => [h.key, h.value]),
-);
+
+const cabecalhosDe = (source: string): Record<string, string> =>
+  Object.fromEntries((vercel.headers.find((r) => r.source === source)?.headers ?? []).map((h) => [h.key, h.value]));
+
+const SEGURANCA = cabecalhosDe("/(.*)");
+const SEGURANCA_ACOMPANHAR = cabecalhosDe("/acompanhar(.*)");
 // sem CSP no dev: o Vite usa script inline e WebSocket
 const { "Content-Security-Policy": _csp, ...SEGURANCA_DEV } = SEGURANCA;
+const { "Content-Security-Policy": _cspAcomp, ...SEGURANCA_ACOMPANHAR_DEV } = SEGURANCA_ACOMPANHAR;
+
+function cabecalhosPorRota(): Plugin {
+  const aplicar = (regras: Record<string, string>) => {
+    return (req: { url?: string }, res: { setHeader: (k: string, v: string) => void }, next: () => void) => {
+      if (req.url?.startsWith("/acompanhar")) {
+        for (const [k, v] of Object.entries(regras)) res.setHeader(k, v);
+      }
+      next();
+    };
+  };
+  return {
+    name: "cabecalhos-por-rota",
+    configureServer(servidor) {
+      servidor.middlewares.use(aplicar(SEGURANCA_ACOMPANHAR_DEV));
+    },
+    configurePreviewServer(servidor) {
+      servidor.middlewares.use(aplicar(SEGURANCA_ACOMPANHAR));
+    },
+  };
+}
 
 function cabecalhosSeguranca(): Plugin {
   return {
     name: "cabecalhos-seguranca",
     apply: "build",
     generateBundle() {
-      const linhas = Object.entries(SEGURANCA).map(([nome, valor]) => `  ${nome}: ${valor}`);
-      this.emitFile({ type: "asset", fileName: "_headers", source: ["/*", ...linhas, ""].join("\n") });
+      const bloco = (rota: string, mapa: Record<string, string>) => [
+        rota,
+        ...Object.entries(mapa).map(([nome, valor]) => `  ${nome}: ${valor}`),
+        "",
+      ];
+      const linhas = [
+        ...bloco("/*", SEGURANCA),
+        ...(Object.keys(SEGURANCA_ACOMPANHAR).length ? bloco("/acompanhar/*", SEGURANCA_ACOMPANHAR) : []),
+      ];
+      this.emitFile({ type: "asset", fileName: "_headers", source: linhas.join("\n") });
     },
   };
 }
@@ -87,10 +120,13 @@ function cabecaComum(): Plugin {
 
 export default defineConfig({
   base: "./",
-  plugins: [react(), apk(), cabecaComum(), cabecalhosSeguranca()],
+  plugins: [react(), apk(), cabecaComum(), cabecalhosPorRota(), cabecalhosSeguranca()],
   build: {
     rollupOptions: {
-      input: Object.fromEntries(paginas.map((p) => [p.id, resolve(RAIZ, p.caminho, "index.html")])),
+      input: {
+        ...Object.fromEntries(paginas.map((p) => [p.id, resolve(RAIZ, p.caminho, "index.html")])),
+        acompanhar: resolve(RAIZ, "acompanhar/index.html"),
+      },
     },
   },
   server: { port: 3000, host: true, headers: SEGURANCA_DEV },
