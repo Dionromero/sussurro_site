@@ -1,9 +1,8 @@
-import icone from "../assets/icone-192.png";
-import calculadora from "../assets/icone-calculadora-192.png";
-import anotacoes from "../assets/icone-discreto-192.png";
-import treinos from "../assets/icone-treinos-192.png";
-import receitas from "../assets/icone-receitas-192.png";
-import { atraso } from "../revelar";
+import icone from "../assets/icone-192.webp";
+import calculadora from "../assets/icone-calculadora-192.webp";
+import anotacoes from "../assets/icone-discreto-192.webp";
+import treinos from "../assets/icone-treinos-192.webp";
+import receitas from "../assets/icone-receitas-192.webp";
 
 const disfarces = [
   { nome: "Calculadora", imagem: calculadora },
@@ -17,10 +16,7 @@ export function ModoDiscreto() {
     <section className="secao secao--papel">
       <div className="container discreto">
         <div data-revelar>
-          <p className="rotulo">Modo discreto</p>
-          <h2 className="titulo-l">
-            Na tela do celular, pode parecer <em>outra coisa</em>.
-          </h2>
+          <h2 className="titulo-l">Na tela do celular, pode parecer outra coisa</h2>
           <p className="secao__lead">
             Escolha um disfarce e a tela inicial do celular passa a mostrar outro ícone e outro nome, como uma
             calculadora. Por dentro, o app continua igual.
@@ -30,9 +26,9 @@ export function ModoDiscreto() {
             “Sair” no topo fecha tudo na hora.
           </p>
         </div>
-        <div className="discreto__tela" data-revelar style={atraso(120)}>
+        <div className="discreto__tela" data-revelar>
           <div className="discreto__original">
-            <img src={icone} alt="" width={64} height={64} />
+            <img src={icone} alt="" width={64} height={64} loading="lazy" />
             <p>
               <strong>Sussurro</strong>
               <span>Ícone original</span>
@@ -42,7 +38,7 @@ export function ModoDiscreto() {
           <ul className="disfarces">
             {disfarces.map(({ nome, imagem }) => (
               <li key={nome}>
-                <img src={imagem} alt="" width={64} height={64} />
+                <img src={imagem} alt="" width={64} height={64} loading="lazy" />
                 {nome}
               </li>
             ))}

@@ -1,11 +1,9 @@
 import apk from "virtual:apk";
-import { raiz } from "./navegacao";
 
-const megabytes = (bytes: number) =>
-  `${(bytes / 1024 / 1024).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} MB`;
+const megabytes = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1).replace(".", ",")} MB`;
 
 export const download = apk && {
-  url: `${raiz}downloads/${encodeURIComponent(apk.arquivo)}`,
+  url: `/downloads/${encodeURIComponent(apk.arquivo)}`,
   arquivo: apk.arquivo,
   versao: apk.versao,
   tamanho: megabytes(apk.bytes),

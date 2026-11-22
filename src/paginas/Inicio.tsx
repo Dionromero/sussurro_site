@@ -1,16 +1,16 @@
 import { Chamada } from "../sections/Chamada";
-import { Destaques } from "../sections/Destaques";
 import { Emergencia } from "../sections/Emergencia";
 import { Hero } from "../sections/Hero";
-import { Manifesto } from "../sections/Manifesto";
+import { Perguntas } from "../sections/Perguntas";
+import { Telas } from "../sections/Telas";
 
 export function PaginaInicio() {
   return (
     <>
       <Hero />
       <Emergencia />
-      <Destaques />
-      <Manifesto />
+      <Telas />
+      <Perguntas />
       <Chamada />
     </>
   );

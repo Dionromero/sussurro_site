@@ -6,12 +6,8 @@ export function PaginaOApp() {
   return (
     <>
       <Abertura
-        titulo={
-          <>
-            Poucos toques até a ajuda <em>certa</em>.
-          </>
-        }
-        lead="O app não substitui o atendimento especializado. Ele encurta o caminho até ele."
+        titulo="O que o Sussurro faz"
+        lead="Reúne telefones de emergência, locais de atendimento, contatos e direitos em um só lugar. Ele não substitui o atendimento especializado: ajuda a chegar até ele."
       />
       <PorDentro />
       <ModoDiscreto />

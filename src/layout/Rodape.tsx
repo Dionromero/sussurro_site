@@ -10,8 +10,7 @@ export function Rodape() {
       <div className="container">
         <div className="rodape__grade">
           <div className="rodape__marca">
-            <img src={simbolo} alt="" width={52} height={52} />
-            <p className="rodape__frase">Você não está sozinha.</p>
+            <img src={simbolo} alt="" width={52} height={52} loading="lazy" />
             <p className="rodape__aviso">
               Este app orienta e conecta. Ele não substitui o 190, o 180 nem o atendimento especializado.
             </p>
@@ -53,8 +52,10 @@ export function Rodape() {
         </div>
 
         <div className="rodape__base">
-          <p>© {new Date().getFullYear()} Sussurro · Projeto de extensão da Gran Faculdade · Curitiba/PR</p>
-          <p>Sem anúncios, sem cookies, sem rastreadores.</p>
+          <p>© 2026 Sussurro · Projeto de extensão de estudantes da Gran Faculdade · Curitiba/PR</p>
+          <p>
+            <LinkPagina para="privacidade">Política de privacidade</LinkPagina>
+          </p>
         </div>
       </div>
     </footer>

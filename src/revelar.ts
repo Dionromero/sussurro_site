@@ -1,15 +1,14 @@
-import { useEffect, type CSSProperties } from "react";
-
-export const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as CSSProperties;
+import { useEffect } from "react";
 
 export function useRevelar() {
   useEffect(() => {
-    const alvos = document.querySelectorAll<HTMLElement>("[data-revelar]");
-    const revelar = (alvo: Element) => alvo.classList.add("revelado");
-    if (!("IntersectionObserver" in window)) {
-      alvos.forEach(revelar);
-      return;
-    }
+    if (!("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const alvos = [...document.querySelectorAll<HTMLElement>("[data-revelar]")].filter(
+      (alvo) => alvo.getBoundingClientRect().top > window.innerHeight,
+    );
+    const revelar = (alvo: Element) => alvo.classList.remove("oculto");
     const observador = new IntersectionObserver(
       (entradas) => {
         for (const entrada of entradas) {
@@ -20,7 +19,13 @@ export function useRevelar() {
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
-    alvos.forEach((alvo) => observador.observe(alvo));
-    return () => observador.disconnect();
+    for (const alvo of alvos) {
+      alvo.classList.add("oculto");
+      observador.observe(alvo);
+    }
+    return () => {
+      observador.disconnect();
+      alvos.forEach(revelar);
+    };
   }, []);
 }

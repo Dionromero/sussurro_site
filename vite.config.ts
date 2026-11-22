@@ -1,48 +1,52 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig, type Plugin } from "vite";
+import { llms, robots, sitemap, tagsComuns, tagsDaPagina, tagsSemIndice, type Apk } from "./seo.ts";
+import { CONTATO_EMAIL } from "./src/config.ts";
 import { paginas } from "./src/rotas.ts";
 
 const RAIZ = fileURLToPath(new URL(".", import.meta.url));
 const PASTA_DOWNLOADS = join(RAIZ, "public/downloads");
 const MODULO = "virtual:apk";
 
-type Vercel = { headers: { source: string; headers: { key: string; value: string }[] }[] };
-const vercel: Vercel = JSON.parse(readFileSync(join(RAIZ, "vercel.json"), "utf8"));
-const SEGURANCA: Record<string, string> = Object.fromEntries(
-  (vercel.headers.find((regra) => regra.source === "/(.*)")?.headers ?? []).map((h) => [h.key, h.value]),
-);
-// sem CSP no dev: o Vite usa script inline e WebSocket
-const { "Content-Security-Policy": _csp, ...SEGURANCA_DEV } = SEGURANCA;
+type Regra = { source: string; headers: { key: string; value: string }[] };
+const regras: Regra[] = JSON.parse(readFileSync(join(RAIZ, "vercel.json"), "utf8")).headers;
 
-function cabecalhosSeguranca(): Plugin {
+function cabecalhosDoVercel(): Plugin {
+  const aplicar = (semCsp: boolean) => (req: { url?: string }, res: { setHeader(k: string, v: string): void }, next: () => void) => {
+    const caminho = (req.url ?? "/").split(/[?#]/)[0];
+    for (const { source, headers } of regras) {
+      if (!new RegExp(`^${source}$`).test(caminho)) continue;
+      for (const { key, value } of headers) {
+        if (semCsp && (key === "Content-Security-Policy" || key === "Cache-Control")) continue;
+        res.setHeader(key, value);
+      }
+    }
+    next();
+  };
   return {
-    name: "cabecalhos-seguranca",
-    apply: "build",
-    generateBundle() {
-      const linhas = Object.entries(SEGURANCA).map(([nome, valor]) => `  ${nome}: ${valor}`);
-      this.emitFile({ type: "asset", fileName: "_headers", source: ["/*", ...linhas, ""].join("\n") });
-    },
+    name: "cabecalhos-do-vercel",
+    configureServer: (servidor) => void servidor.middlewares.use(aplicar(true)),
+    configurePreviewServer: (servidor) => void servidor.middlewares.use(aplicar(false)),
   };
 }
 
-function lerApk() {
+function lerApk(): Apk {
   if (!existsSync(PASTA_DOWNLOADS)) return null;
   const [maisRecente] = readdirSync(PASTA_DOWNLOADS)
     .filter((nome) => nome.toLowerCase().endsWith(".apk"))
-    .map((nome) => ({ nome, info: statSync(join(PASTA_DOWNLOADS, nome)) }))
-    .sort((a, b) => b.info.mtimeMs - a.info.mtimeMs);
+    .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
   if (!maisRecente) return null;
 
-  const conteudo = readFileSync(join(PASTA_DOWNLOADS, maisRecente.nome));
+  const caminho = join(PASTA_DOWNLOADS, maisRecente);
   return {
-    arquivo: maisRecente.nome,
-    versao: maisRecente.nome.match(/\d+\.\d+\.\d+/)?.[0] ?? null,
-    bytes: maisRecente.info.size,
-    sha256: createHash("sha256").update(conteudo).digest("hex"),
+    arquivo: maisRecente,
+    versao: maisRecente.match(/\d+\.\d+\.\d+/)?.[0] ?? null,
+    bytes: statSync(caminho).size,
+    sha256: createHash("sha256").update(readFileSync(caminho)).digest("hex"),
   };
 }
 
@@ -64,35 +68,59 @@ function apk(): Plugin {
   };
 }
 
-function cabecaComum(): Plugin {
-  const meta = (name: string, content: string) => ({ tag: "meta", attrs: { name, content }, injectTo: "head" as const });
+function cabeca(): Plugin {
   return {
-    name: "cabeca-comum",
+    name: "cabeca",
     transformIndexHtml: {
       order: "pre",
-      handler: () => [
-        meta("theme-color", "#7A2E3A"),
-        meta("referrer", "no-referrer"),
-        meta("robots", "noindex"),
-        { tag: "link", attrs: { rel: "icon", type: "image/png", href: "/favicon.png" }, injectTo: "head" },
-        {
-          tag: "link",
-          attrs: { rel: "preload", href: "/fonts/Fraunces-Variable.ttf", as: "font", type: "font/ttf", crossorigin: true },
-          injectTo: "head",
-        },
-      ],
+      handler: (_html, { filename }) => {
+        const arquivo = relative(RAIZ, filename);
+        const pagina = paginas.find((p) => `${p.caminho}index.html` === arquivo);
+        if (pagina) return [...tagsDaPagina(pagina, lerApk()), ...tagsComuns()];
+        const titulo = arquivo === "404.html" ? "Página não encontrada · Sussurro" : "Localização compartilhada";
+        return [...tagsSemIndice(titulo), ...tagsComuns()];
+      },
     },
   };
 }
 
-export default defineConfig({
-  base: "./",
-  plugins: [react(), apk(), cabecaComum(), cabecalhosSeguranca()],
+function leafletSemIcones(): Plugin {
+  return {
+    name: "leaflet-sem-icones",
+    enforce: "pre",
+    transform: (css, id) =>
+      id.endsWith("leaflet/dist/leaflet.css") ? css.replace(/[^{}]+\{[^{}]*url\(images[^{}]*\}/g, "") : undefined,
+  };
+}
+
+function arquivosDeBusca(): Plugin {
+  return {
+    name: "arquivos-de-busca",
+    apply: "build",
+    generateBundle() {
+      if (!CONTATO_EMAIL) this.warn("CONTATO_EMAIL vazio em src/config.ts: preencha antes de publicar.");
+      this.emitFile({ type: "asset", fileName: "robots.txt", source: robots() });
+      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: sitemap() });
+      this.emitFile({ type: "asset", fileName: "llms.txt", source: llms(lerApk()) });
+    },
+  };
+}
+
+export default defineConfig(({ isSsrBuild }) => ({
+  plugins: [react(), apk(), leafletSemIcones(), ...(isSsrBuild ? [] : [cabeca(), cabecalhosDoVercel(), arquivosDeBusca()])],
   build: {
+    assetsInlineLimit: 0,
+    copyPublicDir: !isSsrBuild,
     rollupOptions: {
-      input: Object.fromEntries(paginas.map((p) => [p.id, resolve(RAIZ, p.caminho, "index.html")])),
+      input: isSsrBuild
+        ? undefined
+        : {
+            ...Object.fromEntries(paginas.map((p) => [p.id, resolve(RAIZ, p.caminho, "index.html")])),
+            "404": resolve(RAIZ, "404.html"),
+            acompanhar: resolve(RAIZ, "acompanhar/index.html"),
+          },
     },
   },
-  server: { port: 3000, host: true, headers: SEGURANCA_DEV },
-  preview: { port: 3000, host: true, headers: SEGURANCA },
-});
+  server: { port: 3000 },
+  preview: { port: 3000 },
+}));

@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import { LogOut } from "lucide-react";
+import { useEffect, useRef, useState, type FocusEvent } from "react";
 import simbolo from "../assets/simbolo-mono.svg";
 import { LinkPagina } from "../components/LinkPagina";
+import { LinkSair } from "../components/LinkSair";
 import { paginas } from "../rotas";
-import { instalarAtalhoEsc, sairRapido } from "../saidaRapida";
-
-const numero = (indice: number) => String(indice + 1).padStart(2, "0");
 
 export function Cabecalho() {
   const cabecalho = useRef<HTMLElement>(null);
+  const alternar = useRef<HTMLButtonElement>(null);
   const [rolou, setRolou] = useState(false);
   const [compacto, setCompacto] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
-
-  useEffect(() => instalarAtalhoEsc(), []);
 
   useEffect(() => {
     const el = cabecalho.current;
@@ -48,14 +44,23 @@ export function Cabecalho() {
 
   useEffect(() => {
     if (!menuAberto) return;
-    const aoTeclar = (e: KeyboardEvent) => e.key === "Escape" && setMenuAberto(false);
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMenuAberto(false);
+      alternar.current?.focus();
+    };
     window.addEventListener("keydown", aoTeclar);
     return () => window.removeEventListener("keydown", aoTeclar);
   }, [menuAberto]);
 
+  const aoPerderFoco = (e: FocusEvent<HTMLElement>) => {
+    if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) setMenuAberto(false);
+  };
+
   return (
     <header
       ref={cabecalho}
+      onBlur={aoPerderFoco}
       className={[
         "cabecalho",
         (rolou || menuAberto) && "cabecalho--solido",
@@ -78,21 +83,11 @@ export function Cabecalho() {
           ))}
         </nav>
 
-        <button
-          type="button"
-          className="sair"
-          onClick={sairRapido}
-          title="Sai desta página na hora. Atalho: Esc três vezes."
-        >
-          <LogOut size={16} aria-hidden="true" className="sair__icone" />
-          Sair rápido
-          <kbd className="sair__atalho" aria-hidden="true">
-            Esc ×3
-          </kbd>
-        </button>
+        <LinkSair />
 
         <button
           type="button"
+          ref={alternar}
           className="menu__alternar"
           aria-expanded={menuAberto}
           aria-controls="menu-movel"
@@ -109,20 +104,18 @@ export function Cabecalho() {
       <nav
         id="menu-movel"
         className={`menu-movel${menuAberto ? " menu-movel--aberto" : ""}`}
-        aria-label="Páginas"
-        inert={!menuAberto}
+        aria-label="Páginas (menu)"
       >
         <div className="menu-movel__dobra">
-          <ol className="container menu-movel__lista">
-            {paginas.map((p, i) => (
+          <ul className="container menu-movel__lista">
+            {paginas.map((p) => (
               <li key={p.id}>
                 <LinkPagina para={p.id} className="menu-movel__link">
-                  <span className="menu-movel__numero">{numero(i)}</span>
                   {p.rotulo}
                 </LinkPagina>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </nav>
     </header>

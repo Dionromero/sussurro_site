@@ -18,7 +18,6 @@ export function QrCode({ texto, rotulo }: { texto: string; rotulo: string }) {
   const tamanho = lado + MARGEM * 2;
   return (
     <svg
-      className="qr"
       viewBox={`${-MARGEM} ${-MARGEM} ${tamanho} ${tamanho}`}
       shapeRendering="crispEdges"
       role="img"

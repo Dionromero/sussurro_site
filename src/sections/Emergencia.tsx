@@ -5,15 +5,9 @@ export function Emergencia() {
   return (
     <section className="emergencia" aria-labelledby="titulo-emergencia">
       <div className="container">
-        <div className="emergencia__cabeca">
-          <p className="emergencia__sinal">
-            <span aria-hidden="true" />
-            Emergência
-          </p>
-          <h2 id="titulo-emergencia" className="emergencia__titulo">
-            Está em perigo agora? Não espere pelo app.
-          </h2>
-        </div>
+        <h2 id="titulo-emergencia" className="emergencia__titulo">
+          Para quem ligar, sem esperar pelo app
+        </h2>
         <ul className="emergencia__lista">
           {canais.map((c) => (
             <li key={c.numero}>

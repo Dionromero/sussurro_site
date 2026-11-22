@@ -2,3 +2,6 @@ node_modules/
 dist/
 .vercel/
 *.tsbuildinfo
+.prerender/
+*.jks
+*.keystore

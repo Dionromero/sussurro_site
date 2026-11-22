@@ -1,6 +1,7 @@
 import type { MouseEvent, ReactNode } from "react";
 import { useRevelar } from "../revelar";
 import { Cabecalho } from "./Cabecalho";
+import { FaixaEmergencia } from "./FaixaEmergencia";
 import { Rodape } from "./Rodape";
 
 function pularParaConteudo(evento: MouseEvent<HTMLAnchorElement>) {
@@ -17,6 +18,7 @@ export function Layout({ children }: { children: ReactNode }) {
         Pular para o conteúdo
       </a>
       <Cabecalho />
+      <FaixaEmergencia />
       <main id="conteudo" tabIndex={-1}>
         {children}
       </main>

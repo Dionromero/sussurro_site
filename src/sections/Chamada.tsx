@@ -2,27 +2,28 @@ import { ArrowRight } from "lucide-react";
 import simbolo from "../assets/simbolo-mono.svg";
 import { BotaoDownload } from "../components/BotaoDownload";
 import { LinkPagina } from "../components/LinkPagina";
+import { REQUISITOS } from "../config";
+import { descreverDownload } from "../download";
 
 export function Chamada() {
   return (
-    <section className="secao secao--curta">
+    <section className="secao">
       <div className="container">
         <div className="chamada" data-revelar>
-          <img src={simbolo} alt="" className="chamada__marca" width={420} height={420} />
-          <p className="rotulo rotulo--claro">Gratuito para Android</p>
-          <h2 className="titulo-l">
-            Quando você precisar, ele <em>está aqui</em>.
-          </h2>
+          <img src={simbolo} alt="" className="chamada__marca" width={420} height={420} loading="lazy" />
+          <h2 className="titulo-l">Baixe o Sussurro direto deste site</h2>
           <p className="chamada__texto">
-            Sem cadastro e sem anúncios. A instalação é feita em três passos, direto por este site.
+            O app ainda não está na Play Store. Antes de instalar, veja como conferir o arquivo e o que apagar depois, se
+            outra pessoa usa o seu celular.
           </p>
           <div className="chamada__acoes">
             <BotaoDownload variante="claro" />
             <LinkPagina para="instalar" className="botao botao--contorno">
-              Ver como instalar
+              Instalar com segurança
               <ArrowRight size={18} aria-hidden="true" />
             </LinkPagina>
           </div>
+          <p className="chamada__nota">{descreverDownload(REQUISITOS)}</p>
         </div>
       </div>
     </section>
