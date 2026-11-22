@@ -17,7 +17,7 @@ export const perguntas = [
   {
     pergunta: "Quem vê a minha localização?",
     resposta:
-      "Com a sua permissão, o app envia a posição ao servidor do projeto para calcular o que está perto; essa posição não é gravada. Outra pessoa só a recebe quando você confirma o envio. Na localização ao vivo, o servidor guarda apenas a última posição e a apaga quando você para ou quando o tempo acaba.",
+      "Com a sua permissão, o app envia a posição ao servidor do projeto para calcular o que está perto; essa posição não é gravada. Outra pessoa só a recebe quando você confirma o envio. Na localização ao vivo, o servidor guarda apenas a última posição e a apaga quando você para ou quando o tempo acaba. Enquanto ela dura, o celular mostra uma notificação, inclusive com a tela bloqueada. Sem disfarce, o texto revela o compartilhamento; com um disfarce, usa o nome dele.",
   },
   {
     pergunta: "O modo discreto esconde o app?",

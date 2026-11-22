@@ -16,7 +16,7 @@ const dados = [
   },
   {
     titulo: "Localização ao vivo",
-    oque: "Só quando você inicia: posição, precisão e horário, a cada 15 segundos, por 15, 30 ou 60 minutos. No começo, o app também envia a posição ao Nominatim, do OpenStreetMap, para escrever o endereço na mensagem.",
+    oque: "Só quando você inicia: posição, precisão e horário, a cada 15 segundos, por 15, 30 ou 60 minutos, mesmo com a tela bloqueada. Uma notificação fica visível enquanto durar; sem disfarce, ela diz que a localização está sendo compartilhada. No começo, o app também envia a posição ao Nominatim, do OpenStreetMap, para escrever o endereço na mensagem.",
     onde: "Servidor do projeto, no Supabase, e Nominatim. Quem tem o link vê a posição na página de acompanhamento deste site.",
     tempo: "Só a última posição fica guardada, e ela é apagada quando você para ou o tempo acaba. O registro da sessão, com um código diário gerado a partir do IP para limitar abusos, sai do servidor cerca de uma hora depois.",
   },
