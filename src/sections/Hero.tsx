@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import ilustracao from "../assets/ilustracao.svg";
 import { BotaoDownload } from "../components/BotaoDownload";
+import { IlustracaoHero } from "../components/IlustracaoHero";
 import { LinkPagina } from "../components/LinkPagina";
 import { REQUISITOS } from "../config";
 import { descreverDownload } from "../download";
@@ -32,13 +32,7 @@ export function Hero() {
 
         <figure className="hero__arte">
           <div className="hero__moldura">
-            <img
-              src={ilustracao}
-              alt="Ilustração de uma mulher de perfil, de olhos fechados, com o dedo indicador sobre os lábios."
-              width={520}
-              height={520}
-              fetchPriority="high"
-            />
+            <IlustracaoHero />
           </div>
         </figure>
       </div>
