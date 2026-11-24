@@ -930,9 +930,6 @@ main:focus {
   padding: 0;
   list-style: none;
 }
-.telas li:nth-child(2) {
-  margin-top: 56px;
-}
 .telas li > .tela {
   max-width: 300px;
 }
@@ -965,9 +962,6 @@ main:focus {
   .telas {
     grid-template-columns: minmax(0, 1fr);
     gap: 40px;
-  }
-  .telas li:nth-child(2) {
-    margin-top: 0;
   }
   .telas li {
     display: grid;
