@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type FocusEvent } from "react";
 import simbolo from "../assets/simbolo-mono.svg";
 import { LinkPagina } from "../components/LinkPagina";
-import { LinkSair } from "../components/LinkSair";
 import { paginas } from "../rotas";
 
 export function Cabecalho() {
@@ -82,8 +81,6 @@ export function Cabecalho() {
             </LinkPagina>
           ))}
         </nav>
-
-        <LinkSair />
 
         <button
           type="button"

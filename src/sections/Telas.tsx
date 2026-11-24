@@ -14,9 +14,9 @@ const itens = [
     texto: "Cada local mostra telefone, horário, quem é atendido e quando o dado foi verificado.",
   },
   {
-    tela: "direitos",
-    titulo: "Sete guias que abrem sem internet",
-    texto: "Da medida protetiva ao plano de segurança. Ainda aguardam revisão profissional, e o app avisa isso.",
+    tela: "acompanhar",
+    titulo: "Acompanhamento ao vivo no navegador",
+    texto: "Quem recebe o link acompanha a posição pelo celular em tempo real, sem precisar instalar o app.",
   },
 ] as const;
 
@@ -37,7 +37,7 @@ export function Telas() {
           ))}
         </ul>
         <p className="telas__nota">
-          Capturas da versão de testes, em novembro de 2026. Mapa © colaboradores do OpenStreetMap.{" "}
+          Capturas da versão de testes, em novembro de 2026. Mapa © colaboradores do OpenStreetMap · OpenFreeMap.{" "}
           <LinkPagina para="o-app" className="link-seta">
             Ver tudo o que o app faz
             <ArrowRight size={18} aria-hidden="true" />

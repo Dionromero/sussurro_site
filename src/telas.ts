@@ -1,5 +1,5 @@
-import direitos from "./assets/telas/direitos.webp";
-import direitosP from "./assets/telas/direitos-320.webp";
+import acompanhar from "./assets/telas/acompanhar.webp";
+import acompanharP from "./assets/telas/acompanhar-320.webp";
 import inicio from "./assets/telas/inicio.webp";
 import inicioP from "./assets/telas/inicio-320.webp";
 import lista from "./assets/telas/lista.webp";
@@ -16,9 +16,10 @@ export const telas = {
     pequena: listaP,
     descricao: "Lista da rede de apoio, com endereço, horário, data de verificação, telefone e botão Como chegar.",
   },
-  direitos: {
-    grande: direitos,
-    pequena: direitosP,
-    descricao: "Lista de guias do app: emergência, plano de segurança, boletim de ocorrência e medida protetiva.",
+  acompanhar: {
+    grande: acompanhar,
+    pequena: acompanharP,
+    descricao:
+      "Tela demonstrativa de acompanhamento ao vivo no navegador, com posição simulada em Curitiba, coordenadas, mapa e atalhos para traçar rota.",
   },
 };

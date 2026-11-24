@@ -45,8 +45,7 @@ export function Rodape() {
           <div className="rodape__coluna">
             <h2>Saída rápida</h2>
             <p>
-              Aperte <kbd>Esc</kbd> três vezes, ou use o botão “Sair rápido” no topo, e esta página vira uma pesquisa
-              comum na hora.
+              Aperte <kbd>Esc</kbd> três vezes e esta página vira uma pesquisa comum na hora.
             </p>
           </div>
         </div>
