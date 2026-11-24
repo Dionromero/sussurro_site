@@ -2,7 +2,7 @@ import { readFileSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const raiz = fileURLToPath(new URL("..", import.meta.url));
-const { renderizar } = await import(`${raiz}.prerender/servidor.js`);
+const { renderizar } = await import(new URL("../.prerender/servidor.js", import.meta.url).href);
 
 const arquivos = {
   inicio: "index.html",
