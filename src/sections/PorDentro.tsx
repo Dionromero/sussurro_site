@@ -40,8 +40,8 @@ export function PorDentro() {
     <section className="secao secao--colada" aria-labelledby="titulo-recursos">
       <div className="container por-dentro">
         <figure className="por-dentro__celular">
-          <Tela tela="inicio" tamanhos="260px" prioridade />
-          <figcaption>Captura da versão de testes. Mapa © colaboradores do OpenStreetMap.</figcaption>
+          <Tela tela="inicio" tamanhos="(max-width: 56.25em) 260px, 320px" prioridade />
+          <figcaption>Captura da versão de testes. Mapa © colaboradores do OpenStreetMap · OpenFreeMap.</figcaption>
         </figure>
         <div>
           <h2 id="titulo-recursos" className="titulo-m">

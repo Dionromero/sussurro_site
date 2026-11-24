@@ -1170,11 +1170,8 @@ main:focus {
 
 /* ── O app: recursos ── */
 .por-dentro__celular {
-  position: sticky;
-  top: calc(var(--cabecalho) + 24px);
   width: 100%;
   max-width: 320px;
-  max-width: min(320px, calc((100vh - var(--cabecalho) - 96px) * 0.46));
   margin: 0 auto;
 }
 .por-dentro__celular figcaption {
@@ -1185,15 +1182,14 @@ main:focus {
 }
 @media (max-width: 56.25em) {
   .por-dentro__celular {
-    position: static;
     max-width: 260px;
   }
 }
 .por-dentro {
   display: grid;
   grid-template-columns: minmax(0, 340px) 1fr;
-  gap: 96px;
-  align-items: start;
+  gap: 72px;
+  align-items: center;
 }
 .recursos {
   margin: 0;
@@ -1203,8 +1199,8 @@ main:focus {
 .recurso {
   display: grid;
   grid-template-columns: 52px 1fr;
-  gap: 8px 22px;
-  padding: 28px 0;
+  gap: 6px 22px;
+  padding: 20px 0;
   border-top: 1px solid var(--linha);
 }
 .recurso:last-child {
@@ -1481,14 +1477,14 @@ main:focus {
 }
 .passo {
   position: relative;
-  padding: 26px 0 26px 64px;
+  padding: 20px 0 20px 64px;
   border-top: 1px solid var(--linha);
   counter-increment: passo;
 }
 .passo::before {
   content: counter(passo);
   position: absolute;
-  top: 24px;
+  top: 18px;
   left: 0;
   display: grid;
   place-items: center;
@@ -1520,12 +1516,10 @@ main:focus {
 .instalar {
   display: grid;
   grid-template-columns: minmax(0, 420px) 1fr;
-  gap: 80px;
-  align-items: start;
+  gap: 72px;
+  align-items: center;
 }
 .cartao {
-  position: sticky;
-  top: calc(var(--cabecalho) + 32px);
   padding: 32px;
   border: 1px solid var(--linha);
   border-radius: var(--raio-g);
@@ -1616,7 +1610,7 @@ main:focus {
   display: flex;
   gap: 14px;
   margin-top: 12px;
-  padding: 22px 24px;
+  padding: 18px 22px;
   border-radius: 22px;
   background: var(--tinta-suave);
 }
@@ -1635,8 +1629,6 @@ main:focus {
     gap: 48px;
   }
   .cartao {
-    position: relative;
-    top: 0;
     padding: 24px;
   }
 }
