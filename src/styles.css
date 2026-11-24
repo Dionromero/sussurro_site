@@ -49,13 +49,13 @@
   --suave: cubic-bezier(0.22, 1, 0.36, 1);
   --serif: "Fraunces", Georgia, serif;
   --sans: "Atkinson", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --cabecalho-alto: 132px;
-  --cabecalho: 96px;
+  --cabecalho-alto: 92px;
+  --cabecalho: 72px;
 }
 @media (max-width: 35em) {
   :root {
-    --cabecalho-alto: 120px;
-    --cabecalho: 80px;
+    --cabecalho-alto: 80px;
+    --cabecalho: 68px;
   }
 }
 *,
@@ -199,7 +199,7 @@ main:focus {
   background-color: var(--noite);
   background-image: radial-gradient(640px 320px at 12% 0%, rgb(122 46 58 / 0.32), transparent);
   color: rgb(255 252 247 / 0.72);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgb(255 252 247 / 0.08);
   transition:
     background-color 450ms ease,
     backdrop-filter 450ms ease,
@@ -223,22 +223,24 @@ main:focus {
   }
 }
 .cabecalho__linha {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 20px;
   height: calc(var(--cabecalho-alto) - (var(--cabecalho-alto) - var(--cabecalho)) * var(--encolhido));
 }
 .marca {
   display: flex;
+  justify-self: start;
   align-items: center;
   min-height: 44px;
-  gap: 14px;
+  gap: 12px;
   color: var(--papel);
   text-decoration: none;
 }
 .marca__simbolo {
-  width: calc(58px - 16px * var(--encolhido));
-  height: calc(58px - 16px * var(--encolhido));
+  width: calc(44px - 6px * var(--encolhido));
+  height: calc(44px - 6px * var(--encolhido));
   border-radius: 50%;
   box-shadow:
     0 0 0 1px rgb(255 252 247 / 0.14),
@@ -250,15 +252,18 @@ main:focus {
 }
 .marca__nome {
   font-family: var(--serif);
-  font-size: calc(32px - 6px * var(--encolhido));
+  font-size: calc(26px - 3px * var(--encolhido));
   font-weight: 540;
   font-variation-settings: "opsz" 72;
   letter-spacing: -0.015em;
 }
 .menu {
   display: flex;
-  gap: 4px;
-  margin: 0 auto;
+  justify-self: center;
+  gap: 6px;
+}
+.cabecalho__linha .sair {
+  justify-self: end;
 }
 .menu__link {
   position: relative;
@@ -266,8 +271,8 @@ main:focus {
   align-items: center;
   min-height: 44px;
   padding: 10px 16px;
-  color: rgb(255 252 247 / 0.78);
-  font-size: 0.9062rem;
+  color: rgb(255 252 247 / 0.8);
+  font-size: 0.9375rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -278,7 +283,7 @@ main:focus {
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: 3px;
+  bottom: 6px;
   height: 1.5px;
   border-radius: 2px;
   background: var(--latao-claro);
@@ -413,6 +418,10 @@ main:focus {
   transform: rotate(-45deg);
 }
 @media (max-width: 56.25em) {
+  .cabecalho__linha {
+    display: flex;
+    justify-content: space-between;
+  }
   .menu {
     display: none;
   }
@@ -425,18 +434,19 @@ main:focus {
   }
   .menu__alternar {
     display: grid;
+    margin-left: auto;
   }
 }
 @media (max-width: 35em) {
   .marca {
-    gap: 12px;
+    gap: 10px;
   }
   .marca__simbolo {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
   }
   .marca__nome {
-    font-size: 1.5rem;
+    font-size: 1.375rem;
   }
 }
 @media (max-width: 26.25em) {
@@ -515,63 +525,80 @@ main:focus {
 /* ── Faixa de emergência ── */
 .faixa {
   background: var(--vinho-profundo);
+  border-bottom: 1px solid rgb(255 252 247 / 0.08);
   color: var(--papel);
 }
 .faixa__linha {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 24px;
+  justify-content: center;
+  gap: 8px 18px;
+  padding-block: 7px;
 }
 .faixa__titulo {
   margin: 0;
   color: var(--rosado);
-  font-size: 0.9375rem;
+  font-size: 0.9062rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 .faixa__lista {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .faixa__canal {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 0 8px;
-  align-content: center;
-  min-height: 48px;
-  padding: 6px 14px;
-  font-size: 0.9375rem;
+  gap: 7px;
+  min-height: 38px;
+  padding: 4px 15px;
+  border: 1px solid rgb(255 252 247 / 0.18);
+  border-radius: 999px;
+  background: rgb(255 252 247 / 0.05);
+  font-size: 0.9062rem;
   text-decoration: none;
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms var(--suave);
 }
 .faixa__canal strong {
   font-family: var(--serif);
-  font-size: 1.375rem;
+  font-size: 1.1875rem;
   font-weight: 560;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 .faixa__canal span {
-  text-decoration: underline;
-  text-decoration-color: rgb(255 252 247 / 0.45);
-  text-underline-offset: 3px;
+  color: rgb(255 252 247 / 0.88);
 }
 .faixa__canal:hover {
-  background: rgb(255 252 247 / 0.1);
+  border-color: rgb(255 252 247 / 0.36);
+  background: rgb(255 252 247 / 0.12);
+  transform: translateY(-1px);
 }
 .faixa__canal--destaque {
+  border-color: rgb(255 255 255 / 0.18);
   background: var(--emergencia);
+  box-shadow: 0 6px 16px -8px rgb(168 39 43 / 0.9);
+}
+.faixa__canal--destaque span {
+  color: var(--papel);
 }
 .faixa__canal--destaque:hover {
+  border-color: rgb(255 255 255 / 0.34);
   background: #bf363c;
 }
 @media (max-width: 35em) {
   .faixa__linha {
-    padding: 0;
+    padding: 6px 12px;
   }
   .faixa__titulo {
     position: absolute;
@@ -583,14 +610,16 @@ main:focus {
   .faixa__lista {
     flex: 1;
     flex-wrap: nowrap;
-    gap: 0;
+    gap: 6px;
   }
   .faixa__lista li {
     flex: 1;
   }
   .faixa__canal {
-    height: 100%;
-    padding: 6px 4px;
+    width: 100%;
+    min-height: 44px;
+    padding: 6px 8px;
+    gap: 5px;
   }
 }
 

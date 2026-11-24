@@ -149,9 +149,9 @@ export function PaginaPrivacidade() {
             </p>
             <h3>Saída rápida e histórico</h3>
             <p>
-              O botão “Sair rápido”, ou Esc três vezes, troca a página por uma pesquisa no Google. Trocar de página aqui
-              não acumula entradas no botão voltar, mas o histórico do navegador ainda registra a visita. Se precisar,
-              apague-o ou use uma aba anônima.
+              Apertar Esc três vezes troca a página por uma pesquisa no Google. Trocar de página aqui não acumula
+              entradas no botão voltar, mas o histórico do navegador ainda registra a visita. Se precisar, apague-o ou
+              use uma aba anônima.
             </p>
             <p className="politica__data">
               Em vigor desde <time dateTime={POLITICA_DATA}>{dataPorExtenso}</time>. Quando algo mudar, esta página e esta
